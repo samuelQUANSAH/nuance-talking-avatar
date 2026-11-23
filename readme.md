@@ -1,4 +1,11 @@
-<h1 align="center">LivePortrait: Efficient Portrait Animation with Stitching and Retargeting Control</h1>
+<div align="center">
+  <a href="https://colab.research.google.com/github/samuelQUANSAH/nuance-talking-avatar/blob/main/nuance_avatar_colab.ipynb" target="_blank">
+    <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" height="32px"/>
+  </a>
+</div>
+<br>
+
+<h1 align="center">Nuance Talking Avatar (LivePortrait)</h1>
 
 <div align='center'>
     <a href='https://github.com/cleardusk' target='_blank'><strong>Jianzhu Guo</strong></a><sup> 1*†</sup>&emsp;
