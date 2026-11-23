@@ -145,7 +145,7 @@ if not osp.exists("pretrained_weights") or not osp.exists("pretrained_weights/li
     print(f"[✓] Space build directory prepared successfully with {len(list(dest_dir.rglob('*')))} files.")
 
 
-def deploy(space_name: str = "nuance-talking-avatar"):
+def deploy(space_name: str = "citronCALAPP"):
     api, username = check_auth()
     if not api or not username:
         print("\n[!] Cannot deploy without Hugging Face authentication.")
@@ -165,27 +165,36 @@ def deploy(space_name: str = "nuance-talking-avatar"):
         )
         print(f"[✓] Space repository confirmed: {repo_id}")
     except Exception as e:
-        print(f"[!] Error creating/accessing Space repo: {e}")
-        return False
+        print(f"[*] Note on repo access: {e}")
 
     # Prepare local package
     build_dir = Path("build_hf_space")
     user_avatar = Path("assets/examples/source/avatar_source.jpg")
     prepare_space_directory(build_dir, user_avatar)
 
-    # Upload files to Space
+    # Upload files to Space, replacing legacy files cleanly
     print(f"[*] Uploading files to Hugging Face Space ({repo_id})...")
     try:
         api.upload_folder(
             folder_path=str(build_dir),
             repo_id=repo_id,
             repo_type="space",
-            commit_message="feat: deploy Nuance talking avatar with active listening retargeting"
+            delete_patterns=["*.js", "*.html", "*.css", "Dockerfile", "default.conf", "test_app.js", "deploy.py"],
+            commit_message="feat: repurpose space for Nuance talking avatar with LivePortrait"
         )
         print(f"\n=======================================================")
-        print(f"[🎉] Deployment initiated successfully!")
+        print(f"[🎉] Deployment uploaded successfully!")
         print(f"Space URL: https://huggingface.co/spaces/{repo_id}")
         print(f"=======================================================")
+        
+        # Ensure space is unpaused / restarting
+        try:
+            print("[*] Triggering space restart / rebuild...")
+            api.restart_space(repo_id=repo_id)
+            print("[✓] Space rebuild triggered successfully!")
+        except Exception as re_err:
+            print(f"[*] Restart trigger status: {re_err}")
+
         return True
     except Exception as e:
         print(f"[!] Upload failed: {e}")
