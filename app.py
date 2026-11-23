@@ -37,7 +37,11 @@ def fast_check_ffmpeg():
 
 # set tyro theme
 tyro.extras.set_accent_color("bright_cyan")
-args = tyro.cli(ArgumentConfig)
+import sys
+if any('-f' in arg or 'kernel' in arg for arg in sys.argv):
+    args = tyro.cli(ArgumentConfig, args=[])
+else:
+    args = tyro.cli(ArgumentConfig)
 
 ffmpeg_dir = os.path.join(os.getcwd(), "ffmpeg")
 if osp.exists(ffmpeg_dir):
@@ -493,8 +497,9 @@ with gr.Blocks(theme=gr.themes.Soft(font=[gr.themes.GoogleFont("Plus Jakarta San
         show_progress=True
     )
 
-demo.launch(
-    server_port=args.server_port,
-    share=args.share,
-    server_name=args.server_name
-)
+if __name__ == "__main__":
+    demo.launch(
+        server_port=args.server_port,
+        share=args.share,
+        server_name=args.server_name
+    )
