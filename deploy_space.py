@@ -134,6 +134,13 @@ if not osp.exists("pretrained_weights") or not osp.exists("pretrained_weights/li
     else:
         app_source = auto_download_header + app_source
 
+    # Inject user avatar as top example in data_examples_i2v
+    if 'data_examples_i2v = [' in app_source:
+        app_source = app_source.replace(
+            'data_examples_i2v = [',
+            'data_examples_i2v = [\n    [osp.join(example_portrait_dir, "avatar_source.jpg"), osp.join(example_video_dir, "d0.mp4"), True, True, True, False],'
+        )
+
     (dest_dir / "app.py").write_text(app_source)
     print(f"[✓] Space build directory prepared successfully with {len(list(dest_dir.rglob('*')))} files.")
 
