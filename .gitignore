@@ -16,6 +16,7 @@ pretrained_weights/liveportrait_animals
 
 # Ipython notebook
 *.ipynb
+!nuance_avatar_colab.ipynb
 
 # Temporary files or benchmark resources
 animations/*
