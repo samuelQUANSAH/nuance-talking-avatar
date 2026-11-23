@@ -7,6 +7,13 @@ The entrance of the gradio for human
 import os
 import tyro
 import subprocess
+import huggingface_hub
+if not hasattr(huggingface_hub, "HfFolder"):
+    class HfFolder:
+        @classmethod
+        def get_token(cls):
+            return huggingface_hub.get_token()
+    huggingface_hub.HfFolder = HfFolder
 import gradio as gr
 import os.path as osp
 from src.utils.helper import load_description
